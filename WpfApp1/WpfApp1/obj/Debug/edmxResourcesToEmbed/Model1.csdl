@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="leadmanageModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Call">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LeadID" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="CallDateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Duration" Type="Int32" Nullable="false" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Lead" Relationship="Self.calls_fk0" FromRole="Call" ToRole="Lead" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Call_User" FromRole="Call" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Lead">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="HandlingObjections" Type="Double" Nullable="false" />
+    <Property Name="SellTechniques" Type="Double" Nullable="false" />
+    <Property Name="ProductKnowledge" Type="Double" Nullable="false" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Call" Relationship="Self.calls_fk0" FromRole="Lead" ToRole="Call" />
+    <NavigationProperty Name="User" Relationship="Self.leads_fk0" FromRole="Lead" ToRole="User" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HandlingObjections" Type="Double" Nullable="false" />
+    <Property Name="SellTechniques" Type="Double" Nullable="false" />
+    <Property Name="ProductKnowledge" Type="Double" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Call" Relationship="Self.FK_Call_User" FromRole="User" ToRole="Call" />
+    <NavigationProperty Name="Lead" Relationship="Self.leads_fk0" FromRole="User" ToRole="Lead" />
+  </EntityType>
+  <Association Name="calls_fk0">
+    <End Role="Lead" Type="Self.Lead" Multiplicity="1" />
+    <End Role="Call" Type="Self.Call" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lead">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Call">
+        <PropertyRef Name="LeadID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Call_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Call" Type="Self.Call" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Call">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="leads_fk0">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Lead" Type="Self.Lead" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Lead">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="leadmanageEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Call" EntityType="Self.Call" />
+    <EntitySet Name="Lead" EntityType="Self.Lead" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="calls_fk0" Association="Self.calls_fk0">
+      <End Role="Lead" EntitySet="Lead" />
+      <End Role="Call" EntitySet="Call" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Call_User" Association="Self.FK_Call_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Call" EntitySet="Call" />
+    </AssociationSet>
+    <AssociationSet Name="leads_fk0" Association="Self.leads_fk0">
+      <End Role="User" EntitySet="User" />
+      <End Role="Lead" EntitySet="Lead" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

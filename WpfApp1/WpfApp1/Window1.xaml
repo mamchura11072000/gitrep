@@ -1,0 +1,41 @@
+﻿<Window x:Class="WpfApp1.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Window1" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Image Source="logo.png" Width="100"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <CheckBox Content="Все лиды" Margin="5" Name="IsLead"/>
+            <Button Content="Обновить" Click="Button_Click" Name="IsActive"/>
+        </StackPanel>
+        <DataGrid Grid.Row="2"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Leads}"
+                  SelectedItem="{Binding Lead}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Пользователь" Binding="{Binding Path=User.Login}" Width="*" />
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Path=Phone}" Width="*" />
+                <DataGridTextColumn Header="Навыки" Binding="{Binding Path=SellTechniques}" Width="*" />
+                <DataGridTextColumn Header="Дата создания" Binding="{Binding Path=CreateDateTime}" Width="*" />
+                <DataGridCheckBoxColumn Header="Активность" Binding="{Binding Path=IsActive}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Button Content="Информация" Foreground="White" Background="Blue" HorizontalAlignment="Left" Margin="5" Click="Button_Click_3"/>
+            <Button Content="Создать" Foreground="White" Background="Green" HorizontalAlignment="Left" Click="Button_Click_1" Margin="5"/>
+            <Button Content="Удалить" Foreground="White" Background="Red" HorizontalAlignment="Left" Margin="5" Click="Button_Click_2"/>
+        </StackPanel>
+    </Grid>
+</Window>

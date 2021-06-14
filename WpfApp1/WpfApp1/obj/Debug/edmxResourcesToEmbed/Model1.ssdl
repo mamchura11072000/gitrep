@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище leadmanageModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Call">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LeadID" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="CallDateTime" Type="datetime" Nullable="false" />
+    <Property Name="Duration" Type="int" Nullable="false" />
+    <Property Name="Comment" Type="text" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Lead">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="HandlingObjections" Type="float" Nullable="false" />
+    <Property Name="SellTechniques" Type="float" Nullable="false" />
+    <Property Name="ProductKnowledge" Type="float" Nullable="false" />
+    <Property Name="Comment" Type="varchar(max)" />
+    <Property Name="CreateDateTime" Type="datetime" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Password" Type="varchar(max)" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="255" />
+    <Property Name="MiddleName" Type="varchar" MaxLength="255" />
+    <Property Name="LastName" Type="varchar" MaxLength="255" />
+    <Property Name="HandlingObjections" Type="float" Nullable="false" />
+    <Property Name="SellTechniques" Type="float" Nullable="false" />
+    <Property Name="ProductKnowledge" Type="float" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="calls_fk0">
+    <End Role="Lead" Type="Self.Lead" Multiplicity="1" />
+    <End Role="Call" Type="Self.Call" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lead">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Call">
+        <PropertyRef Name="LeadID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Call_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Call" Type="Self.Call" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Call">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="leads_fk0">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Lead" Type="Self.Lead" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Lead">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище leadmanageModelContainer">
+    <EntitySet Name="Call" EntityType="Self.Call" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Lead" EntityType="Self.Lead" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="calls_fk0" Association="Self.calls_fk0">
+      <End Role="Lead" EntitySet="Lead" />
+      <End Role="Call" EntitySet="Call" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Call_User" Association="Self.FK_Call_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Call" EntitySet="Call" />
+    </AssociationSet>
+    <AssociationSet Name="leads_fk0" Association="Self.leads_fk0">
+      <End Role="User" EntitySet="User" />
+      <End Role="Lead" EntitySet="Lead" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
